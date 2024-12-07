@@ -1,4 +1,4 @@
-import java.util.ArrayList; //to add the palindromes
+ //to add the palindromes
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException; 
@@ -11,9 +11,15 @@ public class Algorithms {
         f = new File("words.txt");
         int twoLetter = findtwoLetter();
         System.out.println(twoLetter);
-        s.close();
 
-        System.out.println(findlongWords());
+        int longestLeng = findlongwordLength();
+        String longestWords = longestWords(longestLeng);
+        System.out.println(longestWords);
+
+        int numOfPalindromes = palindromes();
+        System.out.println("# of palindromes: " + numOfPalindromes);
+
+        s.close();
 
     }
 
@@ -46,20 +52,41 @@ public class Algorithms {
         return longestLeng;
     }
 
-    public static ArrayList<String> findlongWords() throws FileNotFoundException{ 
+    //string method where it appends the longest words to a string
+    public static String longestWords(int longLen) throws FileNotFoundException{
         s = new Scanner(f);
-        int longestLeng = findlongwordLength();
-        ArrayList<String> words = new ArrayList<String>();
+        String wordString = "";
 
         while (s.hasNext())
         {
-            String word = s.next();
-            int wordLeng = (s.next()).length();
-            if (wordLeng == longestLeng)
+            String temp = s.next();
+            if (temp.length() == longLen)
             {
-                words.add(word);
+                wordString = wordString + temp + " ";
             }
         }
-        return words;
+        return wordString;
+    }
+
+    public static int palindromes() throws FileNotFoundException{
+        s = new Scanner(f);
+        int numPalindromes = 0;
+
+        while (s.hasNext())
+        {
+            String temp = s.next();
+            String palinString = "";
+            
+            int stringLen = (temp.length());
+            for (int i = stringLen; i > 0; i--)
+            {
+                palinString = palinString + temp.substring(i - 1, i);
+                if (palinString.equals(temp))
+                {
+                    numPalindromes ++;
+                }
+            }
+        }
+        return numPalindromes;
     }
 }
